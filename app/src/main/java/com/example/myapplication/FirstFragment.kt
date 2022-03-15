@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentFirstBinding
 
@@ -33,12 +35,39 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.randomButton.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            val showCountTextView = binding.textviewFirst
+            val currentCount = showCountTextView.text.toString().toInt()
+            val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currentCount)
+            findNavController().navigate(action)
         }
+
+        binding.toastButton.setOnClickListener{
+            // create a Toast with some text, to appear for a short time
+            val myToast = Toast.makeText(context, "Hello Toast!", Toast.LENGTH_SHORT)
+            // show the Toast
+            myToast.show()
+        }
+
+        binding.countButton.setOnClickListener{
+            countMe(view)
+
+        }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun countMe(view: View) {
+        // Get the text view
+        val showCountTextView = view.findViewById<TextView>(R.id.textview_first)
+        // Get the value of the text view.
+        val countString = showCountTextView.text.toString()
+        var count = countString.toInt() + 1
+        // Display the new value in the text view.
+        showCountTextView.text = count.toString()
+    }
+
 }
